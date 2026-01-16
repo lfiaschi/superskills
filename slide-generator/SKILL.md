@@ -5,7 +5,7 @@ description: This skill generates professional presentation slides from any cont
 
 # Slide Generator
 
-Generate professional slides from any content using Gemini's image generation API.
+Generate professional slides from any content using a two-pass approach: story first, then visual design.
 
 ## Before You Start
 
@@ -18,342 +18,446 @@ If not set, tell the user to run `export GEMINI_API_KEY='...'` and stop.
 
 ---
 
+## Architecture
+
+This skill uses two specialized agents in sequence, with context discovery upfront:
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                          │
+│   INPUT            CLARIFY           PASS 1             PASS 2             OUTPUT        │
+│   ─────            ───────           ──────             ──────             ──────        │
+│                                                                                          │
+│   Source      ┌───────────┐    ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   │
+│   Material    │  Context  │    │ Story Agent  │   │ Design Agent │   │   Gemini     │   │
+│   ─────────►  │  Questions│ ─► │              │ ─►│              │ ─►│   Image      │   │
+│               │  (≤5)     │    │ Storyboard & │   │ Visual       │   │   Generation │   │
+│               └───────────┘    │ Content      │   │ Design       │   │              │   │
+│                    │           └──────────────┘   └──────────────┘   └──────────────┘   │
+│                    ▼                  │                  │                  │           │
+│               [User Input]       story.md         design_system.md      slides/         │
+│                                                   visual_specs.md       ├─ slide_01.png │
+│                                       │           prompts.json          └─ slides.pdf  │
+│                                       ▼                  │                              │
+│                                [User Review]      [User Review]                         │
+│                                                                                          │
+└──────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Why this flow?**
+- **Context first** — Understanding goals shapes everything else
+- **Separation of concerns** — Each agent does one thing well
+- **Better iteration** — Change the story without redoing visuals, or restyle without rewriting
+
+---
+
 ## The Process
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────┐
-│  1. ANALYZE  →  2. CLARIFY  →  3. DESIGN  →  4. APPROVE  →  5. GENERATE  →  6. REVIEW  │
-│                                                                               │
-│  Deep dive     ≤5 questions   Full content   User gate     Create images   Fix issues │
-│  into content  (if needed)    + narrative    before API    via Gemini      with user  │
-└───────────────────────────────────────────────────────────────────────────────┘
+0. CLARIFY  →  1. STORY AGENT  →  2. REVIEW  →  3. DESIGN AGENT  →  4. REVIEW  →  5. GENERATE  →  6. REVIEW
+   ───────      ───────────        ──────        ────────────        ──────        ────────        ──────
+   Context      Storyboard &       User          Visual system       User          Create          Fix
+   questions    content            approves      & specifications    approves      images          issues
+   (≤5)                            story                             design
 ```
 
 ---
 
-## 1. Analyze: Deep Content Review
+## 0. Context Discovery
 
-When the user provides source material (document, transcript, notes, brief, or verbal description), perform a thorough analysis before anything else.
+**Goal:** Understand the presentation context before creating content.
 
-### What to Extract
+After receiving source material, do a **quick scan** to understand what's there, then ask the user **up to 5 clarifying questions** about context.
 
-| Element | What You're Looking For |
-|---------|------------------------|
-| **Core message** | The single sentence that captures everything. If the material doesn't have one, identify what it *should* be. |
-| **Audience signals** | Who is this for? Technical depth, decision-making authority, familiarity with domain. |
-| **Tensions & opportunities** | Problems, risks, counterintuitive truths, opportunity costs — the raw material for narrative. |
-| **Evidence inventory** | Data points, examples, case studies, quotes — what's available to support claims. |
-| **Gaps & ambiguities** | What's missing or unclear that would affect slide design. |
+### What to Scan For
 
-### Output: Analysis Summary
+Quickly identify:
+- What type of content is this? (data, research, proposal, report, etc.)
+- What's the apparent subject matter?
+- How much detail/data is available?
 
-Produce a structured summary:
+### Questions to Ask
 
-```markdown
-### Content Analysis
+Ask **only what you need** — skip questions where the answer is obvious from context. Maximum 5 questions total.
 
-**Core Message (Draft):** [One sentence — the thing everything else supports]
+**Question bank (choose relevant ones):**
 
-**Audience Assumptions:**
-- [Who they appear to be]
-- [What they likely need to decide/understand/believe]
-- [Their probable familiarity with the domain]
-
-**Key Tensions Identified:**
-- [Tension 1: e.g., "Current approach feels safe but is measurably inefficient"]
-- [Tension 2: if applicable]
-
-**Available Evidence:**
-- [Data point or example 1]
-- [Data point or example 2]
-- [...]
-
-**Gaps Flagged:**
-- [Gap 1: e.g., "No clear success metrics provided"]
-- [Gap 2: if applicable]
-```
-
-**Do not proceed to Clarify until this analysis is complete.**
-
----
-
-## 2. Clarify: Batched Questions (If Needed)
-
-Based on your analysis, determine if you need user input to proceed effectively.
-
-### Rules
-
-1. **Ask only if genuinely needed** — If you can make reasonable assumptions, do so
-2. **Maximum 5 questions** — Prioritize ruthlessly
-3. **One batch only** — No back-and-forth; ask all questions at once
-4. **State your defaults** — For each question, indicate what you'll assume if the user doesn't answer
+| Category | Question | Why It Matters |
+|----------|----------|----------------|
+| **Event/Setting** | "Where will this be presented? (conference talk, board meeting, team sync, async document, etc.)" | Formality, depth, tone |
+| **Goal** | "What's the primary goal? (inform/educate, persuade/sell, enable a decision, document for reference)" | Shapes the entire structure |
+| **Presentation Mode** | "Will this be presented live or read independently?" | Live = bold points, speaker fills gaps. Read = detailed, self-contained |
+| **Density** | "Should slides be dense with details or minimal with key points?" | Affects how much content per slide |
+| **Audience** | "Who's the audience and what do they already know about this topic?" | Technical depth, context needed |
+| **Constraints** | "Any constraints? (number of slides, time limit, must-include elements)" | Hard requirements |
+| **Tone** | "What tone fits best? (formal, conversational, urgent, neutral)" | Voice throughout |
 
 ### Question Format
 
 ```markdown
-### Clarifying Questions
+Before I create the storyboard, I have a few questions:
 
-Before I design the slides, I need your input on a few things:
+1. **[Question]**
+   *If you skip this, I'll assume: [default]*
 
-1. **[Specific question]**
-   *If you don't specify, I'll assume: [default assumption]*
+2. **[Question]**
+   *If you skip this, I'll assume: [default]*
 
-2. **[Specific question]**
-   *If you don't specify, I'll assume: [default assumption]*
+[up to 5 questions]
 
-[... up to 5 questions maximum]
+Feel free to answer briefly or skip any — I'll use sensible defaults.
 ```
 
-### What's Worth Asking
+### Defaults (When User Doesn't Answer)
 
-| Worth asking | Not worth asking |
-|--------------|------------------|
-| "Is the goal to get budget approval or alignment on strategy?" | "Who is the audience?" (you should infer this) |
-| "Should I emphasize the 40% waste finding or the reallocation opportunity?" | "What's the main message?" (you should identify this) |
-| "Is there sensitivity around naming the underperforming channels?" | Generic questions you can answer yourself |
+| Question | Default Assumption |
+|----------|-------------------|
+| Event/Setting | Professional meeting |
+| Goal | Inform/educate |
+| Presentation Mode | Presented live |
+| Density | Balanced (not too dense, not too sparse) |
+| Audience | Knowledgeable but needs context |
+| Constraints | ~10-15 slides |
+| Tone | Professional, neutral |
 
-### If No Questions Needed
-
-State briefly: "I have enough context to proceed. Moving to slide design." Then continue to Design.
-
-**Wait for user response before proceeding to Design.**
+**Wait for user response before proceeding to Story Agent.**
 
 ---
 
-## 3. Design: Full Content + Narrative
+## 1. Story Agent: Storyboard & Content
 
-This is where the presentation takes shape. You will produce **complete slide content** — not just an outline.
+**Goal:** Transform source material into a well-structured storyboard, tailored to the context from Step 0.
 
-### Pick Your Narrative Shape
+**Launch the agent:**
 
-| If the goal is... | Use this structure |
-|-------------------|-------------------|
-| **Decision/approval** | Pyramid: Lead with recommendation, then evidence |
-| **Persuasion/buy-in** | Narrative: Problem → Failed approaches → This solution → Proof |
-| **Education/understanding** | Journey: Setup → Concepts (building) → Synthesis → Application |
+Use the Task tool to spawn the `story-agent` subagent:
+- **subagent_type:** Reference the `story-agent` defined in `agents/story_agent.md`
+- **prompt:** Include:
+  1. The user's source material
+  2. The context answers from Step 0 (event, goal, mode, density, audience, constraints, tone)
+  3. Instruction to save output to `story.md`
 
-Most decks are hybrids. Open with tension (narrative), earn trust with evidence (pyramid), close with action.
+**What the Story Agent does:**
+1. **Evidence extraction** — Inventories all data, facts, and claims from the source
+2. **Structure selection** — Chooses approach based on the GOAL (inform → explanatory, persuade → argumentative, decide → comparative, document → comprehensive)
+3. **Slide content** — Writes each slide with appropriate density for the MODE
+4. **Quality checks** — Ensures content matches the stated goal and audience
 
-### Slide Content Template
+**How context shapes the output:**
 
-For **each slide**, produce this complete markdown:
+| Context | Impact on Storyboard |
+|---------|---------------------|
+| **Goal: Inform** | Neutral presentation of facts, no "call to action," balanced perspective |
+| **Goal: Persuade** | Clear thesis, supporting evidence, addresses objections, ends with ask |
+| **Goal: Decide** | Options laid out fairly, pros/cons, recommendation with reasoning |
+| **Goal: Document** | Comprehensive, self-contained, detailed for future reference |
+| **Mode: Presented** | Bold headlines, 3-4 points max per slide, speaker notes carry detail |
+| **Mode: Read** | More text per slide, self-explanatory, annotations and context included |
+| **Density: High** | Data-rich, tables, detailed breakdowns |
+| **Density: Low** | Key messages only, one idea per slide |
 
+**Story Agent output:** `story.md`
 ```markdown
----
+# [Presentation Title]
 
-### Slide [N]: [TITLE THAT STATES AN INSIGHT]
+## Context
+- Event: [from user]
+- Goal: [from user]
+- Mode: [presented/read]
+- Density: [high/balanced/low]
+- Audience: [from user]
+- Constraints: [from user]
+- Tone: [from user]
 
-**Subtitle:** [Optional — briefly clarifies the title's focus]
+## Executive Summary
+[What this deck covers and why]
 
-**Content:**
-• [Bullet point 1: Key data or insight — concise, visual-friendly]
-• [Bullet point 2: Supporting evidence or next step]
-• [Bullet point 3: Another crucial element]
-• [3-5 bullets maximum; reserve detail for speaker notes]
+## Evidence Inventory
+[Data and facts extracted from source]
 
-**Insight/Callout:** [Optional — a key takeaway or actionable insight to highlight visually]
+## Structure
+[Chosen approach and why it fits the goal]
 
-**Visual Layout:**
-[Describe the slide organization: e.g., "Bullets on left (60%), bar chart comparing channels on right (40%)" or "Full-bleed image with title overlay" or "2x2 grid with icons for each quadrant"]
-
-**Speaker Notes:**
-[Full narrative for voiceover — this is where detail lives]
-- Contextual background and why this matters
-- Detailed explanations supporting the bullet points
-- Storytelling elements, examples, or analogies
-- Transition to next slide: "[Bridge sentence to Slide N+1]"
-
----
+## Slides
+[All slides with: title, content, data points, speaker notes (if presented mode)]
 ```
 
-### Title Quality Check
-
-The title must be an **insight**, not a **label**.
-
-| ❌ Label (reject) | ✅ Insight (accept) |
-|-------------------|---------------------|
-| "Market Overview" | "Mobile gaming's $100B market runs on a broken model" |
-| "Our Solution" | "Rewarded play aligns user, publisher, and platform incentives" |
-| "Key Findings" | "40% of ad spend is wasted on saturated channels" |
-| "Recommendations" | "Reallocating $2M to emerging channels doubles expected ROI" |
-
-If you catch yourself writing a label, stop and rewrite.
-
-### Narrative Arc Annotation
-
-After all slides, include a narrative summary:
-
-```markdown
-### Narrative Arc
-
-**The Turn:** Slide [N] — [What shifts here: e.g., "Audience realizes current approach is failing"]
-**The Peak:** Slide [N] — [Highest impact moment: e.g., "The 40% waste revelation"]
-**The Resolution:** Slide [N] — [How it lands: e.g., "Clear path forward with specific reallocation"]
-
-**Arc Shape:** [e.g., "Problem → Evidence → Solution → Proof → Action"]
-```
-
-### Self-Check Before Presenting to User
-
-Run this check on your draft:
-
-| Check | Question | If it fails... |
-|-------|----------|----------------|
-| **Unique job** | If I removed this slide, would the deck still work? | Cut or merge it |
-| **Earned transition** | Can I articulate why this follows the previous slide? | Restructure |
-| **Title test** | Would a smart colleague say "obviously" or "interesting"? | Rewrite title |
-| **Energy death** | Are there 3+ consecutive info-heavy slides? | Add a break (quote, question, visual) |
-| **Peak placement** | Is the most impactful moment buried in the middle? | Move it to a peak position |
-| **Stakes clarity** | Does at least one slide explain why anyone should care? | Add cost of inaction |
-| **Strong close** | Does the deck end with "summary" and "questions?" | End with callback, challenge, or CTA |
-
-### Common Failure Patterns to Avoid
-
-| Pattern | Symptom | Fix |
-|---------|---------|-----|
-| **Laundry list** | 5 slides listing features/benefits | Find the story: problem → solution |
-| **Symmetric trap** | Every section has exactly 3 points | Match structure to content weight |
-| **Buried insight** | Best point is on slide 4 of 12 | Move it to the peak position |
-| **Missing stakes** | No slide explains why anyone should care | Add cost of inaction |
-| **Anticlimax** | Last slides are "summary" and "questions?" | End with callback or emotional beat |
+**Key constraint:** The Story Agent writes NO visual instructions. It may note inherently visual content ("this is a comparison of 4 options") but doesn't prescribe how to show it.
 
 ---
 
-## 4. Approve: User Gate Before Image Generation
+## 2. Story Review: User Gate
 
-**This is a hard stop.** Present the complete deck to the user and wait for approval.
-
-### What to Present
+**This is a hard stop.** Present the story to the user before proceeding.
 
 ```markdown
-## Slide Deck Ready for Review
+## Story Ready for Review
 
-I've designed [N] slides with the following narrative arc:
+I've developed a [N]-slide narrative with the following arc:
 
-**Arc:** [Brief description: e.g., "Problem → Evidence → Solution → Proof → Action"]
-**Peak:** Slide [N] — [What happens there]
-**Total speaking time:** ~[X] minutes (at ~2 min/slide)
+**Thesis:** [Core message in one sentence]
+**Arc:** [Structure description]
+**The Turn:** Slide [N] — [What shifts]
+**The Peak:** Slide [N] — [Highest impact moment]
 
-### Tradeoffs Made
-- [Any decisions you made: e.g., "Prioritized the efficiency story over the growth story"]
-- [Or: "Combined two data points into one slide to maintain pacing"]
+### Slide Sequence
+1. [Slide 1 title] — [Purpose]
+2. [Slide 2 title] — [Purpose]
+...
 
-[FULL SLIDE DECK IN MARKDOWN — all slides with content, visuals, speaker notes]
+[FULL STORY.MD CONTENT]
 
 ---
 
 **Please review and let me know:**
-1. Approve as-is → I'll generate the slide images
-2. Specific changes → Tell me which slides to revise
-3. Major restructure → Tell me what's not working
+1. Approve → I'll proceed to visual design
+2. Content changes → Tell me what to adjust
+3. Restructure → Tell me what's not working with the narrative
 ```
 
-**Do not proceed to Generate until user explicitly approves.**
+**Do not proceed to Design Agent until user explicitly approves the story.**
 
 ---
 
-## 5. Generate: Create the Slide Images
+## 3. Design Agent: Visual System & Specifications
 
-### Style Setup
+**Goal:** Transform approved content into detailed visual specifications.
 
-Define once, reuse for all slides:
+**Launch the agent:**
 
+Use the Task tool to spawn the `design-agent` subagent:
+- **subagent_type:** Reference the `design-agent` defined in `agents/design_agent.md`
+- **prompt:** Include:
+  1. The approved `story.md` content
+  2. Instruction to save outputs to:
+     - `design_system.md` (visual language)
+     - `visual_specs.md` (per-slide specifications)
+     - `prompts.json` (ready for generation)
+
+**What the Design Agent does:**
+1. **Design system** — Defines colors (with semantic meaning), typography personality, spacing, visual elements, signature details
+2. **Per-slide design** — Information hierarchy, visual concept/metaphor, composition, detailed specification
+3. **Visual rhythm** — Plans variety (Heavy/Medium/Light/Dramatic), ensures pacing
+4. **Prompt construction** — Creates generation-ready prompts with design system embedded
+
+**Design Agent outputs:**
+
+### `design_system.md`
+```markdown
+## Design System
+
+### Mood & Personality
+[Visual feeling description]
+
+### Color Palette
+- Primary Background: [hex + usage]
+- Accent 1: [hex + semantic meaning]
+- ...
+
+### Typography
+[Personality descriptions, not font names]
+
+### Visual Elements
+[Shapes, lines, icons, illustration style]
+
+### Signature Elements
+[1-2 distinctive details]
 ```
-STYLE: [minimalist | corporate | creative | technical]
-ASPECT: 16:9
-RESOLUTION: 4K
+
+### `visual_specs.md`
+```markdown
+## Slide [N]: [Title]
+
+### Information Hierarchy
+1. [Primary]
+2. [Secondary]
+3. [Tertiary]
+
+### Visual Concept
+[Why this approach serves the content]
+
+### Visual Specification
+[Detailed description: composition, elements, colors, spacing, micro-details]
+
+### Visual Weight
+[Heavy/Medium/Light/Dramatic]
 ```
 
-**Default style:** minimalist (dark backgrounds work well for professional decks)
-
-**Important:** Do NOT hardcode colors in prompts. The first slide establishes the visual identity, and subsequent slides should reference it to maintain consistency. Let Gemini infer colors from reference images.
-
-### Converting Approved Content to Image Prompts
-
-For each approved slide, construct an image generation prompt:
-
-```
-Create a [STYLE] presentation slide, 16:9 aspect ratio, 4K resolution.
-
-Title: "[EXACT TITLE FROM APPROVED CONTENT]"
-Subtitle: "[EXACT SUBTITLE IF PRESENT]"
-Content: [EXACT bullets/text from approved content — never improvise]
-Layout: [From the Visual Layout field in approved content]
-Visual style: [Style descriptors from setup]
+### `prompts.json`
+```json
+[
+  {
+    "name": "slide_01_title",
+    "prompt": "Create a [MOOD] presentation slide, 16:9 aspect ratio, 4K resolution.\n\nDESIGN LANGUAGE:\n[Design system summary with hex codes]\n\nCONTENT:\nTitle: \"[Exact title]\"\n[Other content]\n\nVISUAL COMPOSITION:\n[Detailed specification]\n\nKEY DETAILS:\n[Critical elements]"
+  }
+]
 ```
 
-**Critical:** The image prompt must match the approved content exactly. Do not add, remove, or modify text.
+**Key principle:** Each prompt carries the design system DNA (colors, typography, mood) so visual consistency is maintained even without reference images — but reference images provide additional reinforcement.
 
-### Reference Strategy for Visual Consistency
+---
 
-**Why this matters:** Without proper referencing, slides will drift in style (different backgrounds, fonts, colors). The key is to always anchor to the first slide.
+## 4. Design Review: User Gate
 
-**Reference strategy (handled automatically by the script):**
-- **Slide 1:** No reference (establishes the visual identity)
-- **Slide 2:** Reference slide 1
-- **Slide 3+:** Reference slide 1 (style anchor) + previous slide (layout continuity)
+**This is a hard stop.** Present the visual approach to the user before generating.
 
-**Do NOT use `--reference-strategy=progressive`** - it causes style drift because slide 1 gets dropped from the reference chain. The default `anchor` strategy is correct.
+```markdown
+## Visual Design Ready for Review
 
-### Generate
+I've designed a visual system for [N] slides:
+
+**Mood:** [Description]
+**Color Palette:** [Key colors and their meanings]
+**Visual Rhythm:** [How the deck flows]
+
+### Design System Summary
+[Key elements from design_system.md]
+
+### Slide Designs
+
+**Slide 1: [Title]**
+- Visual weight: [Heavy/Medium/Light/Dramatic]
+- Concept: [Brief description of approach]
+
+**Slide 2: [Title]**
+- Visual weight: [...]
+- Concept: [...]
+
+[Continue for all slides]
+
+### Full Specifications
+[VISUAL_SPECS.MD CONTENT]
+
+---
+
+**Please review and let me know:**
+1. Approve → I'll generate the slide images
+2. Specific changes → Tell me which slides to redesign
+3. System changes → Tell me what to adjust in the overall visual approach
+```
+
+**Do not proceed to Generate until user explicitly approves the design.**
+
+---
+
+## 5. Generate: Create Slide Images
+
+### Prerequisites
+
+Ensure you have:
+- `prompts.json` from the Design Agent
+- `GEMINI_API_KEY` environment variable set
+
+### Generate Slides
 
 ```bash
 python scripts/generate_slides.py \
   --api-key "$GEMINI_API_KEY" \
-  --output-dir ./slides \
   --prompts-file prompts.json \
-  --model pro
+  --output-dir ./slides \
+  --model pro \
+  --reference-strategy anchor
 ```
 
-Use `pro` model for text-heavy slides (better text rendering).
-Use `flash` model for image-heavy or draft slides (faster iteration).
+**Model selection:**
+- `pro` — Better text rendering, use for text-heavy slides (recommended default)
+- `flash` — Faster iteration, use for drafts or image-heavy slides
 
-**Note:** The script supports multiple reference images per slide. See script documentation for `--reference-strategy` options.
+**Reference strategy:**
+- `anchor` — Slide 1 always included + previous slide (RECOMMENDED)
+- `progressive` — Each slide references only previous (causes drift — avoid)
+- `none` — No references (each slide independent)
+
+The `anchor` strategy ensures visual consistency:
+- Slide 1: No reference (establishes the visual identity from the prompt)
+- Slide 2: References slide 1
+- Slide 3+: References slide 1 (style anchor) + previous slide (layout continuity)
+
+### Assemble PDF (Optional)
+
+```bash
+python scripts/generate_slides.py \
+  --output-dir ./slides \
+  --assemble
+```
 
 ---
 
-## 6. Review: Fix Before Delivery
+## 6. Review: Quality Check & Iteration
+
+### Visual Quality Checks
+
+| Check | What to Look For | Fix |
+|-------|------------------|-----|
+| **Text rendering** | Is all text legible and correct? | Regenerate with `pro` model; simplify text in prompt |
+| **Color consistency** | Does the palette match across slides? | Check reference strategy; verify hex codes in prompts |
+| **Layout accuracy** | Does composition match specification? | Add more explicit positioning in prompt |
+| **Visual weight** | Does rhythm feel right? | Adjust specifications for variety |
+| **Style drift** | Do later slides match earlier ones? | Ensure slide 1 is always in reference chain |
 
 ### The Flip Test
 
-Scan all generated slides in 10 seconds, titles only:
-- Can you grasp the argument from titles alone?
-- Is there visual variety or does every slide look the same?
+View all slides as thumbnails:
+- Can you follow the argument from titles alone?
+- Is there visual variety within consistency?
+- Does the eye know where to go on each slide?
 
-### The Flow Test
+### The Presentation Test
 
-Walk through as if presenting:
+Click through as if presenting:
 - Does each transition feel earned?
 - Would you need to say "so anyway..." anywhere?
+- Do data visualizations communicate clearly?
 
-### Image-Specific Checks
+### Iteration
 
-| Issue | Fix |
-|-------|-----|
-| Text didn't render correctly | Regenerate with `pro` model; simplify text |
-| Visual doesn't match layout spec | Refine prompt with more explicit positioning |
-| Style inconsistent across slides | Reuse exact style string; reference first slide |
-| Blurry output | Ensure "4K resolution" is in prompt |
+If slides need changes:
 
-### Revision Triggers
+1. **Content issues** → Go back to Story Agent, update story.md
+2. **Visual concept issues** → Go back to Design Agent, update specifications
+3. **Rendering issues** → Refine prompts and regenerate specific slides
 
-| If you see... | Then... |
-|---------------|---------|
-| 3+ consecutive info-heavy slides | Add a provocative question, quote, or visual break |
-| A title that's a label | Rewrite and regenerate |
-| Visual monotony | Vary layouts; add full-bleed image or quote slide |
-| Weak ending | Restructure: callback to opening, clear CTA, or emotional beat |
-
-### Iterate with User
-
-Present generated slides. Regenerate as needed based on feedback.
+To regenerate a single slide:
+```bash
+python scripts/generate_slides.py \
+  --api-key "$GEMINI_API_KEY" \
+  --prompt "[Updated prompt for single slide]" \
+  --output ./slides/slide_03.png \
+  --model pro
+```
 
 ---
 
-## Reference
+## File Structure
+
+```
+project/
+├── input/                    # User's source material
+│   └── brief.md              # Or transcript.txt, notes.docx, etc.
+├── story.md                  # Pass 1 output: narrative & content
+├── design_system.md          # Pass 2 output: visual language
+├── visual_specs.md           # Pass 2 output: per-slide specifications
+├── prompts.json              # Pass 2 output: generation-ready prompts
+├── slides/                   # Generated images
+│   ├── slide_01_title.png
+│   ├── slide_02_problem.png
+│   ├── ...
+│   └── slides.pdf            # Assembled deck
+└── scripts/
+    └── generate_slides.py    # Image generation script
+```
+
+---
+
+## Quick Reference
+
+### Subagents
+| Name | File | Purpose |
+|------|------|---------|
+| `story-agent` | `agents/story_agent.md` | Analyzes source material, creates storyboard with slide content |
+| `design-agent` | `agents/design_agent.md` | Creates design system and visual specifications for each slide |
 
 ### API
-
 ```
 Endpoint: POST https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent
 
@@ -367,34 +471,29 @@ generation_config = {"responseModalities": ["IMAGE"]}
 
 ### Troubleshooting
 
-| Issue | Fix |
-|-------|-----|
-| Text not rendering | Use pro model; simplify text |
-| Inconsistent styles | Use proper reference strategy: always include slide 1 as anchor + previous slide. Do NOT use simple progressive (each slide refs only the previous one). |
-| Style drift mid-deck | Slide 1 was dropped from references. Ensure slide 1 is always included as style anchor for all slides. |
-| Blurry output | Specify 4K in prompt |
-| API rate limits | Add delays between requests; batch during off-peak |
-| Colors not matching | Do NOT hardcode colors in prompts. Let Gemini infer from reference images. |
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| Text not rendering | Model limitation | Use `pro` model; reduce text density |
+| Style drift | Reference chain broken | Use `anchor` strategy; always include slide 1 |
+| Colors inconsistent | Hex codes vary | Verify exact hex codes in all prompts |
+| Layout wrong | Vague specification | Add explicit proportions and positions |
+| Visuals too similar | No rhythm planning | Vary visual weight across slides |
+| Prompts too long | Over-specification | Focus on key elements; trust the model |
 
-### Slide Type Reference
+### Design System Checklist
 
-| Content Type | Recommended Format |
-|--------------|-------------------|
-| Single insight | Bold headline, minimal supporting text |
-| Comparison (2-4 items) | Columns or 2x2 grid |
-| Metrics/KPIs | Dashboard cards with big numbers |
-| Process/workflow | Flow diagram or numbered timeline |
-| Trend over time | Line chart |
-| Ranking/proportion | Bar chart or pie chart |
-| Quote/testimonial | Full-bleed with large text |
-| Section break | Bold title, minimal or no body text |
+Before generating, verify design_system.md includes:
+- [ ] Color palette with hex codes AND semantic meanings
+- [ ] Typography personality (not font names)
+- [ ] Spacing philosophy
+- [ ] Visual element style (shapes, lines, icons)
+- [ ] Signature elements for recognition
 
-### Speaker Notes Best Practices
+### Prompt Quality Checklist
 
-Speaker notes should:
-- **Open with context:** Why this slide matters right now
-- **Expand on bullets:** The story behind each point
-- **Include signposts:** "The key thing here is..." or "What this means is..."
-- **Bridge to next slide:** Never end abruptly; set up what's coming
-- **Time guidance:** Roughly 100-150 words per slide ≈ 1-2 minutes
-
+Before generating, verify each prompt in prompts.json includes:
+- [ ] Mood and aspect ratio
+- [ ] Design language summary (colors, typography, style)
+- [ ] Exact text content (verbatim from story.md)
+- [ ] Composition with proportions
+- [ ] Key details for critical elements
