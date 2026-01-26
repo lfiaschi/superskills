@@ -125,10 +125,22 @@ second-opinion/
     └── format_output.py     # Response formatting
 ```
 
+## How to Invoke
+
+The script accepts JSON input via stdin. Pipe a JSON object with:
+- `conversation_history`: List of message objects with `role` and `content`
+- `claude_response`: Claude's response string
+
+Example invocation:
+
+```bash
+cd ~/.claude/skills/second-opinion/scripts && echo '{"conversation_history": [{"role": "user", "content": "What is X?"}], "claude_response": "X is..."}' | python main.py
+```
+
 ## Technical Details
 
 - **Parallel Execution**: Uses `asyncio.gather()` for true concurrent I/O
-- **Timeout**: 90 seconds per model
+- **Timeout**: 300 seconds (5 minutes) per model
 - **Retry Logic**: 2 retries with exponential backoff
 - **Models**: `gpt-5.2-pro` and `gemini-3-pro`
 

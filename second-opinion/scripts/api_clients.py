@@ -65,7 +65,7 @@ def validate_api_keys() -> tuple[bool, str]:
     return True, ""
 
 
-async def query_openai(prompt: str, timeout: int = 60) -> ModelResponse:
+async def query_openai(prompt: str, timeout: int = 300) -> ModelResponse:
     """
     Query OpenAI GPT-5.2 Pro via the Responses API asynchronously.
 
@@ -99,7 +99,14 @@ async def query_openai(prompt: str, timeout: int = 60) -> ModelResponse:
     }
 
     try:
-        async with httpx.AsyncClient(timeout=timeout) as client:
+        # Configure explicit timeouts: short connect, long read for LLM response
+        client_timeout = httpx.Timeout(
+            connect=30.0,
+            read=float(timeout),
+            write=30.0,
+            pool=30.0
+        )
+        async with httpx.AsyncClient(timeout=client_timeout) as client:
             response = await client.post(url, headers=headers, json=payload)
             elapsed_ms = int((time.perf_counter() - start_time) * 1000)
 
@@ -108,7 +115,7 @@ async def query_openai(prompt: str, timeout: int = 60) -> ModelResponse:
                     model="GPT-5.2 Pro",
                     content="",
                     success=False,
-                    error=f"HTTP {response.status_code}: {response.text[:200]}",
+                    error=f"HTTP {response.status_code}: {response.text[:500]}",
                     response_time_ms=elapsed_ms
                 )
 
@@ -153,7 +160,7 @@ async def query_openai(prompt: str, timeout: int = 60) -> ModelResponse:
         )
 
 
-async def query_gemini(prompt: str, timeout: int = 60) -> ModelResponse:
+async def query_gemini(prompt: str, timeout: int = 300) -> ModelResponse:
     """
     Query Google Gemini 3 Pro asynchronously.
 
@@ -245,7 +252,7 @@ async def query_with_retry(
     prompt: str,
     max_retries: int = 2,
     backoff_base: float = 2.0,
-    timeout: int = 60
+    timeout: int = 300
 ) -> ModelResponse:
     """
     Query a model with exponential backoff retry logic.
@@ -281,7 +288,7 @@ async def query_with_retry(
 async def query_models_parallel(
     openai_prompt: str,
     gemini_prompt: str,
-    timeout: int = 60,
+    timeout: int = 300,
     use_retry: bool = True
 ) -> tuple[ModelResponse, ModelResponse]:
     """

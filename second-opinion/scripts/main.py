@@ -11,6 +11,8 @@ Claude performs the actual comparative analysis.
 """
 
 import asyncio
+import json
+import sys
 
 from extract_context import extract_context
 from api_clients import (
@@ -24,7 +26,7 @@ from format_output import format_responses, format_analysis_prompt
 async def run_second_opinion_async(
     conversation_history: list,
     claude_response: str,
-    timeout: int = 90
+    timeout: int = 300
 ) -> str:
     """
     Fetch responses from ChatGPT and Gemini, format for Claude to analyze.
@@ -104,7 +106,7 @@ def _format_total_failure(errors: dict) -> str:
 def run_second_opinion(
     conversation_history: list,
     claude_response: str,
-    timeout: int = 90
+    timeout: int = 300
 ) -> str:
     """
     Synchronous wrapper for run_second_opinion_async.
@@ -123,7 +125,36 @@ def run_second_opinion(
 
 
 def main():
-    """Main entry point for testing."""
+    """
+    Main entry point.
+
+    Accepts JSON input via stdin with the following structure:
+    {
+        "conversation_history": [{"role": "user", "content": "..."}, ...],
+        "claude_response": "..."
+    }
+
+    If no stdin input is provided, runs a test example.
+    """
+    # Check if there's input from stdin
+    if not sys.stdin.isatty():
+        try:
+            input_data = json.load(sys.stdin)
+            conversation_history = input_data.get("conversation_history", [])
+            claude_response = input_data.get("claude_response", "")
+
+            if not conversation_history or not claude_response:
+                print("ERROR: JSON input must contain 'conversation_history' and 'claude_response'")
+                sys.exit(1)
+
+            result = run_second_opinion(conversation_history, claude_response)
+            print(result)
+            return
+        except json.JSONDecodeError as e:
+            print(f"ERROR: Invalid JSON input: {e}")
+            sys.exit(1)
+
+    # Fallback to test mode
     example_conversation = [
         {'role': 'user', 'content': 'What is the capital of France?'},
         {'role': 'assistant', 'content': 'The capital of France is Paris.'}
