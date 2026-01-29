@@ -120,8 +120,16 @@ async def query_openai(prompt: str, timeout: int = 300) -> ModelResponse:
                 )
 
             data = response.json()
+
             # Extract text from Responses API structure
-            content = data["output"][0]["content"][0]["text"]
+            # GPT-5.2+ returns reasoning block first, then message - find the message
+            message_output = next(
+                (item for item in data["output"] if item.get("type") == "message"),
+                None
+            )
+            if not message_output:
+                raise KeyError("No message output found in response")
+            content = message_output["content"][0]["text"]
 
             return ModelResponse(
                 model="GPT-5.2 Pro",
