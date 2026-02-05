@@ -2,6 +2,19 @@
 
 Complete reference for all 12 hook frameworks.
 
+## How to Use This Reference
+
+**These frameworks define argument structure, not language.**
+
+Each framework includes a "Template" section showing the sequence of moves. These templates use placeholder language (e.g., "Smart teams often do X") to illustrate the *type* of statement that goes in each slot — not the actual words to use.
+
+When applying a framework:
+1. Identify which moves it requires (e.g., "state belief → contradict → reveal truth")
+2. Generate completely original language for each move
+3. Never borrow phrasing from the templates — the templates exist to show structure only
+
+The test of good application: a reader should recognize the *logical structure* of the framework, not echo any template language.
+
 ---
 
 ## 1. Hacker Trap Framework

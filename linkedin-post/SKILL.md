@@ -25,7 +25,7 @@ A Reversal framework can be written as choppy fragments OR as flowing prose. Def
 ## Workflow
 
 ```
-INPUT → Extract Core Insight → Identify Intent & Audience → Choose Framework → Apply Structure → OUTPUT
+INPUT → Extract Core Insight → Analyze Author Voice → Identify Intent & Audience → Choose Framework → Apply Structure → OUTPUT
 ```
 
 ### Step 1: Receive Input
@@ -44,7 +44,18 @@ Distill the input into one sentence that is:
 
 Ask yourself: "What is the one thing this post should make the reader realize?"
 
-### Step 3: Identify Intent and Audience
+### Step 3: Analyze the Author's Voice (Critical Step)
+
+Before generating anything, analyze the input to identify:
+
+1. **Sentence rhythm** — Does the author write short punchy sentences? Long flowing ones? Mixed?
+2. **Vocabulary level** — Technical jargon or accessible language? Formal or conversational?
+3. **Distinctive phrases** — Any unique expressions, metaphors, or turns of phrase to preserve?
+4. **Tone markers** — Confident? Reflective? Provocative? Self-deprecating?
+
+This analysis informs how you write, not what you write. The framework handles the "what."
+
+### Step 4: Identify Intent and Audience
 
 **Intent** - What does the author want to achieve?
 - Teach
@@ -59,7 +70,7 @@ Ask yourself: "What is the one thing this post should make the reader realize?"
 - Builder vs leader
 - General vs niche
 
-### Step 4: Choose a Framework
+### Step 5: Choose a Framework
 
 Select the framework that best matches:
 - Audience sophistication
@@ -68,16 +79,19 @@ Select the framework that best matches:
 
 See [references/frameworks.md](references/frameworks.md) for the complete list of 12 frameworks with their mechanical structures and use cases.
 
-### Step 5: Apply the Framework
+### Step 6: Apply the Framework
 
-Apply the **argument structure** of the chosen framework while preserving the author's voice:
+**CRITICAL: Structure, not phrasing.** The frameworks define the *sequence of moves* your argument should make. They do not define vocabulary, sentence patterns, or phrasing. Every word you write should come from the author's voice profile (Step 3) or your own original composition — never from framework templates or any examples you've seen.
 
-1. **Use the framework's logic** — the sequence of moves (e.g., state belief → contradict → reveal truth)
-2. **Keep the author's phrasing** — if they wrote something well, don't rewrite it
-3. **Write in prose by default** — full sentences, real paragraphs, not choppy fragments
-4. **Tighten, don't chop** — remove fluff without fragmenting the prose
+Apply the framework by:
 
-### Step 6: Return Output
+1. **Follow the logical sequence** — each framework has 3-4 moves (e.g., "state belief → contradict → reveal truth"). Hit each move in order.
+2. **Generate original language** — write as if you've never seen an example of this framework. Use vocabulary natural to the author and topic.
+3. **Preserve the author's phrasing** — if they wrote something well, keep it exactly
+4. **Write in prose by default** — full sentences, real paragraphs, not choppy fragments
+5. **Tighten, don't chop** — remove fluff without fragmenting the prose
+
+### Step 7: Return Output
 
 Return:
 1. **Chosen framework** and why it fits the intent/audience
@@ -89,22 +103,31 @@ If the user requests multiple versions, provide **up to 3 versions** using diffe
 
 Quick reference (see [references/frameworks.md](references/frameworks.md) for full details):
 
-| Framework | Best For | Template Starter |
-|-----------|----------|------------------|
-| Hacker Trap | Expert audience, contrarian insight | "Smart teams often do X..." |
-| Wrong-But-True | Contradicting mainstream beliefs | "Everyone believes X. It's wrong." |
-| Expert Fallacy | Senior audience, seniority blind spots | "This mistake doesn't show up early..." |
-| Reversal | Metrics/KPIs, second-order effects | "We optimized for X..." |
-| Open Loop | Narrative buildup, satisfying reveal | "We thought the problem was X. It wasn't." |
-| Withheld Mechanism | Counterintuitive cause-effect | "This worked. Not for the reason we expected." |
-| Pattern Interrupt | Saturated audience, bold statements | "Your dashboard is lying." |
-| Silent Failure | Subtle errors, false confidence | "Nothing crashed. Everything was wrong." |
-| Insight Compression | Mental models, quotable content | "Most X problems aren't X problems." |
-| Narrative Trigger | Trust-building, humanizing | "I knew something was wrong when..." |
-| Constraint-Based | Execution-focused, practical limits | "You only get one metric." |
-| Meta/Category Error | Noisy discourse, reframing debates | "We keep debating X. That's the wrong question." |
+| Framework | Best For | Core Move |
+|-----------|----------|-----------|
+| Hacker Trap | Expert audience, contrarian insight | Expose a mistake that competence causes |
+| Wrong-But-True | Contradicting mainstream beliefs | State belief → declare it wrong → reveal truth |
+| Expert Fallacy | Senior audience, seniority blind spots | Tie the mistake to experience level |
+| Reversal | Metrics/KPIs, second-order effects | Show optimization creating opposite result |
+| Open Loop | Narrative buildup, satisfying reveal | Withhold explanation to pull reader forward |
+| Withheld Mechanism | Counterintuitive cause-effect | State outcome, delay revealing the cause |
+| Pattern Interrupt | Saturated audience, bold statements | Short disruptive declaration |
+| Silent Failure | Subtle errors, false confidence | Frame risk around invisible failures |
+| Insight Compression | Mental models, quotable content | Compress complex idea into sharp reframe |
+| Narrative Trigger | Trust-building, humanizing | Start at moment of realization |
+| Constraint-Based | Execution-focused, practical limits | Frame insight through tradeoffs/limits |
+| Meta/Category Error | Noisy discourse, reframing debates | Challenge how topic is framed |
 
 ## Output Guidelines
+
+### Originality Rule (Critical)
+
+**Never anchor to examples.** This skill contains structural skeletons and framework templates — these exist to show the *sequence of argumentative moves*, not to provide copyable language.
+
+When generating a post:
+- Invent fresh vocabulary appropriate to the author's topic and voice
+- If you catch yourself using a phrase from a skeleton or template, replace it
+- The test: someone reading your output should not be able to guess which framework you used from the phrasing alone — only from the argument structure
 
 ### Voice and Style
 - **Default to prose** — full sentences, real paragraphs, natural flow
@@ -143,33 +166,61 @@ If you find yourself reaching for these, just delete them. The sentence usually 
 ### Preserve the Core Insight
 All versions must convey the same underlying insight — only the structure changes.
 
-## Example Usage
+## Structural Skeletons (Not Examples)
 
-**Input:**
+These skeletons show the **sequence of moves** for each framework. The bracketed placeholders indicate what type of content goes there — never copy specific wording.
+
+### Reversal Skeleton
 ```
-I've noticed that the teams that document everything often ship slower than teams with less documentation. It seems counterintuitive but I think too much process kills momentum.
-```
+[STATE THE OPTIMIZATION: what you/they deliberately improved]
+[INTUITIVE APPEAL: 1-2 sentences on why it seemed right]
 
-**Analysis:**
-- Core insight: Over-documentation slows teams down despite feeling productive
-- Intent: Warn/provoke
-- Audience: Engineering leaders, senior ICs
-- Best framework: Reversal (showing how optimizing for something sensible backfires)
+[TIME/EVENT MARKER], [INVERTED OUTCOME: the opposite of what was expected]
 
-**Output using Reversal Framework:**
-```
-We optimized for documentation. Every decision captured, every meeting summarized. It felt like the right move.
+[DIAGNOSIS: what actually went wrong, the mechanism]
 
-Six months later, we were shipping half as fast.
+[RESOLUTION or REFRAME: what you learned, what to do instead]
 
-The teams spending hours writing docs were the same teams not writing code. Documentation had become a proxy for progress—we confused activity with output.
-
-The fix wasn't less documentation. It was asking a simple question: who actually reads this?
-
-What process have you seen backfire?
+[OPTIONAL: genuine question to the reader]
 ```
 
-Note: The output uses the Reversal structure (optimization → intuitive appeal → inverted outcome) but preserves natural prose flow instead of fragmenting every thought into its own line.
+### Hacker Trap Skeleton
+```
+[PATTERN BREAK: short statement that disrupts a comfortable belief]
+
+[ACKNOWLEDGE THE LOGIC: why smart people do this — validate, don't mock]
+
+[HINT AT COUNTER-TRUTH: signal there's more without fully explaining]
+
+[BODY: develop the insight with specifics from your experience]
+
+[TAKEAWAY: the non-obvious lesson]
+```
+
+### Wrong-But-True Skeleton
+```
+[STATE THE COMMON BELIEF: what most people accept]
+[CONTRADICTION: declare it wrong — be direct]
+
+[THE REAL ISSUE: what's actually true]
+
+[EVIDENCE/REASONING: why you believe this]
+
+[IMPLICATION: what changes if you accept this view]
+```
+
+### Insight Compression Skeleton
+```
+[COMPRESSED INSIGHT: "Most X problems are actually Y problems" form — your original phrasing]
+
+[UNPACK: what this means in practice]
+
+[EXAMPLE or EVIDENCE: make it concrete]
+
+[SO WHAT: the actionable implication]
+```
+
+Use the framework reference file for all 12 frameworks. These skeletons demonstrate structure only — generate all actual language fresh.
 
 ## Multiple Versions
 
@@ -178,24 +229,15 @@ When asked for alternatives, present each version with:
 2. One sentence on why this framing works
 3. The rewritten post
 
-Example:
+Format:
 ```
-## Version 1: Reversal Framework
-Best for showing how a sensible optimization backfired.
+## Version 1: [Framework Name]
+[Why this framing fits the insight and audience]
 
-[Post content]
-
----
-
-## Version 2: Hacker Trap Framework
-Best for attracting experienced readers who might make this mistake.
-
-[Post content]
+[Full post — original language, following the framework's structural moves]
 
 ---
 
-## Version 3: Insight Compression Framework
-Best for creating a quotable mental model.
-
-[Post content]
+## Version 2: [Framework Name]
+...
 ```
