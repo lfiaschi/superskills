@@ -246,10 +246,12 @@ When generating a post:
 - The test: someone reading your output should not be able to guess which framework you used from the phrasing alone — only from the argument structure
 
 ### Voice and Style
-- **Default to prose** — full sentences, real paragraphs, natural flow
-- **Preserve the author's phrasing** — if they said it well, keep it
-- **Tighten, don't rewrite** — remove fluff, don't replace voice
+- **Default to prose** – full sentences, real paragraphs, natural flow
+- **Preserve the author's phrasing** – if they said it well, keep it
+- **Tighten, don't rewrite** – remove fluff, don't replace voice
 - Only use fragmented/choppy style if the author writes that way or requests it
+- **Avoid em dashes (—)** – use en dashes (–) with spaces, commas, or restructure the sentence instead. Em dashes feel overly dramatic and are overused in online writing.
+- **Starting with "And" or "But" is fine** – it creates natural rhythm and emphasis. Don't avoid it out of outdated grammar concerns.
 
 ### Plain English Over Cleverness
 - **Use plain English by default.** Say what you mean directly. Don't reach for metaphors when simple words work.
