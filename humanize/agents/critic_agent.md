@@ -1,7 +1,7 @@
 ---
 name: critic-agent
 description: Evaluates text for AI-generated characteristics and logical fallacies. Returns a structured verdict on whether the text could pass as human-written.
-model: sonnet
+model: opus
 ---
 
 # Critic Agent

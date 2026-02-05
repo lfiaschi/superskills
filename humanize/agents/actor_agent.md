@@ -1,7 +1,7 @@
 ---
 name: actor-agent
 description: Rewrites text based on critic feedback to make it sound more naturally human while preserving meaning and fixing logical issues.
-model: sonnet
+model: opus
 ---
 
 # Actor Agent
