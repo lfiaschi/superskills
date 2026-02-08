@@ -290,6 +290,55 @@ Save to `proposal.md`:
 
 ---
 
+## Conference-Specific Adaptations
+
+Adapt the proposal format and tone based on the target conference:
+
+### PyData (Double-Blind Review)
+- **Remove all identifying information** from the abstract and description — no company name, no personal anecdotes that reveal identity, no "at my company we..."
+- Use "the authors" or passive constructions where you'd normally use "we" or "I"
+- Focus on the technique, not the team or organization
+- Include: Brief summary (2-3 lines for program) + structured description (objective, outline, thesis, takeaways, background knowledge)
+- **Mention open-source libraries by name** — PyData reviewers want to know: scikit-learn? pandas? PyTorch? Polars?
+- Keep proposals focused — aim for ~200 words in the description (not a strict limit)
+
+### PyCon US
+- Specify audience level clearly: "Just starting out", "Some experience", or "Advanced experience"
+- If submitting to a special track (e.g., "The Future of AI with Python"), select the appropriate category
+- Maximum 3 proposals per person — make each one count
+- Lean into Python community values: openness, teaching, enthusiasm
+- Consider mentioning if you're a first-time speaker — PyCon actively supports new voices
+
+### TED / TEDx
+- **Completely different format** — NOT a traditional abstract + outline
+- The "proposal" is your **idea pitch**: one clear, powerful idea in 1-3 paragraphs
+- For TEDx Global Idea Search: prepare a 1-minute video pitch
+- Structure: What is the idea? → Why does it matter? → Why are you the person to share it?
+- No technical jargon — a general audience must understand every word
+- No outline needed — instead, describe the narrative arc of your story
+- The bio should emphasize your unique relationship to the idea, not your job title
+- **One idea rule:** If your proposal contains more than one core idea, it's not ready for TED
+
+### Databricks Data+AI Summit
+- Lead with production metrics and real-world outcomes
+- Reference Databricks ecosystem technologies where relevant (Unity Catalog, MLflow, Delta Lake, etc.)
+- Architecture diagrams are expected — mention them in the outline
+- The abstract should answer: "What real problem did you solve, and what were the measurable results?"
+
+### ODSC
+- Abstract must be at least 250 words — budget accordingly
+- Write every word yourself — the voice must be unmistakably human
+- Explicitly state what attendees will learn from the presentation
+- For workshops: highlight your teaching credentials and experience
+
+### KDD Applied Data Science Track
+- This is a paper, not a talk proposal — 8 pages, academic format
+- **Must include post-launch performance metrics** (desk-rejected otherwise)
+- Follow OpenReview formatting and submission requirements
+- Include a qualified reviewer nomination from the author list
+
+---
+
 ## Remember
 
 A great proposal does three things:

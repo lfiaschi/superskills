@@ -278,3 +278,47 @@ FEEDBACK:
 
 4. "Comprehensive overview" signals breadth over depth. Reviewers prefer talks that go deep on one specific aspect of LLM deployment. Pick your strongest insight and build the abstract around it.
 ```
+
+---
+
+## Conference-Specific Review Criteria
+
+Apply additional checks based on the target conference:
+
+### PyData
+- **Double-blind compliance:** Does the abstract contain identifying information? (company name, "I work at...", personal anecdotes that reveal identity) → FLAG these for removal
+- **Open-source libraries mentioned?** PyData reviewers expect to see specific tool references
+- **Description length:** Good proposals provide key info within ~200 words — is it focused?
+- **New content?** If this talk is already available online, it's unlikely to be accepted
+
+### PyCon US
+- **Audience level specified?** Must clearly state "Just starting out" / "Some experience" / "Advanced experience"
+- **Python relevance clear?** The Python connection must be obvious, not buried
+- **Community tone?** PyCon values teaching, inclusivity, and enthusiasm — overly corporate tone won't land
+
+### TED / TEDx
+- **One idea rule:** Does the proposal contain exactly ONE core idea? Multiple ideas = not ready
+- **General audience test:** Would a non-technical person understand every sentence?
+- **No jargon:** Even common tech terms ("API", "pipeline", "model") need to be explained or avoided
+- **Disqualifying content?** Check for: sales pitches, motivational-speak without substance, political/religious agendas, unproven claims
+- **Idea novelty:** Is this genuinely new or just a repackaging of common knowledge?
+- **Narrative test:** Is there a clear story arc, not just information delivery?
+
+### Databricks Data+AI Summit
+- **Production metrics present?** Databricks strongly values concrete outcomes with numbers
+- **Practical focus?** Is this a "we did it" story or a "you could do it" theory talk?
+- **Architecture details?** Reviewers expect some technical depth, not just business outcomes
+- **Ecosystem alignment?** References to Databricks/open-source data stack technologies strengthen the proposal
+
+### ODSC
+- **Minimum 250 words?** Count the abstract — submissions below this threshold are non-compliant
+- **AI-voice check is CRITICAL** — ODSC explicitly disqualifies AI-generated submissions
+- **Sales pitch check is CRITICAL** — speakers must confirm their proposal isn't a product pitch
+- **Attendee learning stated?** The abstract must explain what attendees will learn
+- **Workshop credentials?** If this is a workshop proposal, does the bio show teaching experience?
+
+### KDD ADS Track
+- **Post-launch metrics required** — submissions without post-deployment quantification are desk-rejected
+- **Paper format, not talk format** — is this written as an 8-page paper with proper academic structure?
+- **Reviewer nomination** — at least one author must be a qualified reviewer
+- **Originality** — is this under review or published elsewhere? (not allowed)

@@ -242,6 +242,41 @@ Ask yourself:
 
 ---
 
+## Conference-Specific Angle Strategies
+
+Different conferences reward different kinds of angles. Adapt your brainstorming:
+
+| Conference | What Wins | What Loses |
+|-----------|-----------|------------|
+| **Databricks Data+AI Summit** | "We built X and here are the production metrics" | Theory without implementation |
+| **ODSC** | Deep technical walkthrough with open-source tools | Anything that smells like a product pitch |
+| **PyData** | Open-source case studies, reproducible work, library deep-dives | Closed-source "magic box" talks |
+| **PyCon US** | Enthusiasm for Python, beginner-friendly insights, community focus | Overly academic or vendor-focused |
+| **TED / TEDx** | ONE powerful idea that changes how people think | Technical depth, methodology talks, product demos |
+| **KDD ADS** | Deployed systems with post-launch metrics | Prototypes or work without production results |
+| **NeurIPS / ICML** | Novel research contributions with rigorous evaluation | Practitioner stories without scientific novelty |
+
+### Special: TED/TEDx Angles
+
+TED is fundamentally different from technical conferences. When brainstorming for TED:
+
+- **Find the ONE idea** — Not "5 things I learned" but ONE insight that reframes how people think
+- **Lead with "why should anyone care?"** — The idea must matter to a general, non-technical audience
+- **Story-first, always** — TED audiences expect narrative, not slides full of architecture diagrams
+- **The "dinner party test"** — Would this idea captivate people at a dinner party who aren't in tech?
+- **Avoid:** Multiple ideas, technical deep-dives, methodology-heavy pitches, company stories
+
+### Special: PyData / PyCon Angles
+
+These communities have strong values around openness and inclusivity:
+
+- **Open source is the default** — Reference specific libraries, share code, make it reproducible
+- **Double-blind review (PyData)** — Your angle must stand on its own merit without your name attached
+- **First-time speaker friendly** — Don't be afraid to pitch "lessons from my first ML project" — the community values this
+- **Mention the libraries** — If you used scikit-learn, pandas, PyTorch — say so explicitly
+
+---
+
 ## What You Do NOT Do
 
 - **Don't write the full proposal** — That's the Writer Agent's job
@@ -249,6 +284,7 @@ Ask yourself:
 - **Don't be safe** — At least one angle should be bold or unconventional
 - **Don't ignore the speaker** — Every angle must play to their actual strengths
 - **Don't use jargon** — "Leverage synergies" is a sign you've stopped thinking
+- **Don't ignore the conference** — An angle perfect for Databricks may be wrong for TED
 
 ---
 

@@ -319,23 +319,91 @@ Present the final proposal to the user:
 The agents are informed about common data science / AI conference requirements:
 
 ### Databricks Data+AI Summit
-- Formats: 20-min lightning talk, 40-min breakout session
-- Focus: Practical, real-world solutions using data + AI
-- Values: Specific metrics, architecture details, before/after outcomes
-- Avoid: Generic overviews, theory without practice
+- **Formats:** 20-min lightning talk, 40-min breakout session
+- **Focus:** Practical, real-world solutions using data + AI
+- **Values:** Specific metrics, architecture details, before/after outcomes
+- **Hot topics:** Agentic AI, LLM applications, Unity Catalog, data governance, real-time streaming, data democratization
+- **Technologies to reference:** Apache Spark, Delta Lake, MLflow, Mosaic AI, Lakeflow, Agent Bricks, Databricks SQL, Unity Catalog
+- **Review:** Complete and thorough submissions receive priority; practical practitioner stories highly valued
+- **Avoid:** Generic overviews, theory without practice, talks without concrete outcomes
+- **Tip:** "Are you solving real-world problems with data and AI?" is their guiding question
 
 ### ODSC (Open Data Science Conference)
-- Abstract minimum: 250 words
-- **Critical: AI-generated submissions are disqualified**
-- No product/sales pitches (strictly enforced)
-- Workshop proposals require teaching credentials
-- Submit in Round 1 for best acceptance odds
+- **Abstract minimum:** 250 words (strictly enforced)
+- **Critical: AI-generated submissions are disqualified** — flagged submissions are removed from consideration
+- **No product/sales pitches** — you must confirm your proposal is not a sales pitch upon submission
+- **Workshop proposals** require teaching credentials (university, bootcamp, or core contributor experience)
+- **Two rounds:** Submit in Round 1 for best acceptance odds; Round 2 fills gaps
+- **Abstract must match presentation** — committee reserves the right to reject if talk doesn't match abstract
+- **Materials deadline:** Draft slides due ~6 weeks before conference, final slides ~4 weeks before
+- **Original content preferred** — recycled presentations unlikely to be accepted
+- **Also has:** GenAI X Summit (business/executive track) — different audience, different tone
+
+### PyData (Global, London, Berlin, Amsterdam, etc.)
+- **Formats:** 30-min talks (Global), 40-min talks (London), 90-min tutorials
+- **Review process:** Double-blind — do NOT include identifying information in abstract/description
+- **Abstract fields:** Brief summary (few lines, for program) + longer description (structured, with objective, outline, thesis, key takeaways, and required background knowledge)
+- **Open source focus:** Community of creators and users of open-source scientific computing tools
+- **Mention libraries:** If your system uses open source tools, name them and clarify if it's a case study or library deep-dive
+- **First-time speakers:** Indicate in your proposal — PyData offers a speaker mentorship program pairing you with experienced presenters
+- **Sales pitches rejected:** You can reference closed-source products but the talk must focus on techniques and insights
+- **Strong preference for new talks** — if your talk is already available online, it's unlikely to be accepted
+- **Keep proposals focused:** Good proposals typically provide all important information within 200 words (not a strict limit)
+- **Tip:** The community values practical, reproducible work with open-source tools
+
+### PyCon US
+- **Formats:** 30-min or 45-min talks, 90-min tutorials, posters, charlas (Spanish-language talks)
+- **Proposal limit:** Maximum 3 proposals per person (including all types)
+- **Max speakers:** 2 per proposal (exceptions for panels/podcasts)
+- **Special tracks (2026):** "The Future of AI with Python" and "Trailblazing Python Security"
+- **Audience levels:** "Just starting out" (introductory), "Some experience" (intermediate), "Advanced experience"
+- **Mentorship program:** Submit early to participate in proposal mentorship before the deadline
+- **Past proposals available:** PyCon publishes accepted AND rejected proposals for reference
+- **Speaker grants:** Travel grant available (1 per accepted proposal in 2026)
+- **Values:** Diversity of speakers, practical Python content, community building
+- **Tip:** "What excites you about Python? What do you wish someone had told you?" — lean into genuine enthusiasm
+
+### TED / TEDx
+- **Fundamentally different format** — not a traditional CFP process
+- **TED main stage:** By nomination/invitation only via [speaker-nominations.ted.com](https://speaker-nominations.ted.com/)
+- **TEDx Global Idea Search:** Submit a 1-minute video pitching your idea; finalists get coaching; one speaker per region invited to TED Vancouver
+- **TEDx local events:** Each independently organized with its own application process; many accept year-round
+- **Talk length:** Typically 7-15 minutes (max 18 minutes); most are under 12 minutes
+- **What they want:** NEW and NOVEL ideas that change attitudes, minds, or lives — must offer a unique insight or new way of thinking
+- **The Venn diagram test:** Your idea must sit at the intersection of: (1) your domain of expertise, (2) something you're passionate about sharing, (3) something with real value to the audience
+- **Coaching:** Selected speakers go through 3-4 months of talk development with a speaker coach
+- **What disqualifies:** Motivational talks, canned talks given elsewhere, self-promotion, fundraising, political/religious agendas, unproven pseudo-science, traumatic events not adequately processed
+- **Key difference from other conferences:** TED is about ONE powerful idea, not technical depth. The proposal is about the idea, not the methodology.
+- **Speakers are unpaid** — this is a platform for ideas, not a speaking engagement
+- **Tip:** Lead with "What is the ONE idea?" — if you can't state it in one sentence, it's not ready for TED
+
+### KDD (Knowledge Discovery and Data Mining)
+- **Tracks:** Research Track, Applied Data Science (ADS) Track, AI for Sciences Track, Datasets & Benchmarks Track
+- **ADS Track key requirement:** Must include quantification of **post-launch performance** — submissions without this are desk-rejected
+- **Format:** 8-page papers (not talk proposals) submitted via OpenReview
+- **Double-blind review** for research track
+- **Reviewer obligation:** Each submission must nominate at least one qualified reviewer from the author list
+- **Resubmission rules:** Strict policies on revisions from previous cycles
+- **Multiple cycles per year:** Two deadlines annually
+- **Tip:** KDD ADS is for deployed systems with real metrics — not prototypes or theoretical work
+
+### NeurIPS / ICML (Academic ML Conferences)
+- **Format:** Paper submissions (not talk proposals) — 8-10 pages
+- **Workshop proposals:** Due 4-5 months before conference; require topic description, invited speakers, organizer bios, diversity plan
+- **Workshop papers:** Extended abstracts (4-6 pages) submitted to individual accepted workshops
+- **Review:** Double-blind via OpenReview
+- **Focus:** Novel research contributions, not practitioner talks
+- **Tip:** These are academic venues — focus on novelty, rigor, and reproducibility rather than practical deployment stories
 
 ### General Best Practices (All Conferences)
 - Detailed outlines correlate almost perfectly with acceptance
 - Concrete takeaways differentiate accepted from rejected proposals
 - The "why you" question must be answered in the bio
 - Specificity > breadth: "How We Reduced Inference Latency 10x" beats "ML Optimization Tips"
+- Submit early — many conferences have mentorship programs for early submissions
+- Submit multiple proposals — committees know their gaps better than you do
+- Get peer feedback before submitting
+- Don't recycle proposals across conferences without tailoring them
 
 ---
 
