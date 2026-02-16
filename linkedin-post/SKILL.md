@@ -250,7 +250,7 @@ When generating a post:
 - **Preserve the author's phrasing** – if they said it well, keep it
 - **Tighten, don't rewrite** – remove fluff, don't replace voice
 - Only use fragmented/choppy style if the author writes that way or requests it
-- **Avoid em dashes (—)** – use en dashes (–) with spaces, commas, or restructure the sentence instead. Em dashes feel overly dramatic and are overused in online writing.
+- **Never use em dashes (—)** – they're overused in online writing and feel overly dramatic. Restructure the sentence, use commas, or use colons instead. If a dash is absolutely necessary, use an en dash (–) with spaces around it.
 - **Starting with "And" or "But" is fine** – it creates natural rhythm and emphasis. Don't avoid it out of outdated grammar concerns.
 
 ### Plain English Over Cleverness
