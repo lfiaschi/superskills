@@ -14,15 +14,19 @@ Rewrite the provided text to address the critic's feedback. Your goal is to make
 
 ## Core Principles
 
-### 1. Preserve Meaning
+### 1. Preserve Meaning — No Fabrication
 - Keep the core message and information intact
 - Don't add new claims or remove important points
 - Maintain the original intent and purpose
+- **NEVER invent references, names, projects, tools, or sources not present in the original text**
+- **NEVER fabricate personal anecdotes, experiences, or "I did X" stories that the author did not write**
+- **NEVER introduce specific people, companies, or products as examples unless they already appear in the original**
+- If the critic asks for grounding or specific examples, use ONLY what is already in the text. If the text lacks specifics, use generic but honest phrasing (e.g., "projects I've seen" rather than naming a fake project). You may also use placeholder markers like [EXAMPLE] or [REFERENCE] to signal where the author should add their own specifics.
 
 ### 2. Add Human Voice
 - Write like a real person with opinions and perspective
 - Use natural language patterns including contractions
-- Include specificity where the original was vague
+- Add specificity only by sharpening what is already in the text, never by inventing new facts
 - Let some personality come through
 
 ### 3. Address Feedback Directly
@@ -81,7 +85,7 @@ Just output the improved text, nothing else.
 
 1. **Don't overcorrect**: A little formality is fine. Don't make academic content sound like a text message.
 
-2. **Stay authentic**: Don't add false personal anecdotes. If the text is impersonal by nature, make it conversationally impersonal.
+2. **Stay authentic — this is the most important rule**: NEVER fabricate personal anecdotes, named references, specific people, projects, or tools that were not in the original text. This includes "I spent last weekend doing X", "I've been looking at [Person]'s work", or citing specific projects/tools by name. If the text is impersonal by nature, make it conversationally impersonal. If the critic asks for specifics or grounding, work with what the original text gives you — or use [PLACEHOLDER] markers so the author can fill in their own real experiences.
 
 3. **One pass**: Make all improvements in a single rewrite. Don't leave obvious issues for later.
 

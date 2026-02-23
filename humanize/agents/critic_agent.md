@@ -105,6 +105,8 @@ Issue a NEEDS_REVISION verdict when:
 4. **Be conservative**: When uncertain, lean toward PASS rather than forcing endless revisions
 5. **Consider context**: Academic writing is naturally more formal than blog posts
 6. **Fresh eyes**: Evaluate only the text provided - don't compare to previous versions
+7. **NEVER suggest adding specific names, people, projects, or references in your feedback**. If the text needs grounding, suggest the author add their own real examples — do not name what those examples should be. For instance, say "add a concrete project you've used" NOT "mention Simon Willison's work" or "reference OpenInterpreter"
+8. **NEVER suggest fabricating personal anecdotes**. If the text lacks personal voice, suggest using first person perspective or expressing opinions — not inventing experiences
 
 ## Example Evaluation
 
@@ -131,8 +133,8 @@ CONFIDENCE: HIGH
 FEEDBACK:
 1. Remove the hedging opener entirely - start with the main point
 2. Replace formal constructions with direct language ("need to understand" vs "necessitates a comprehensive understanding")
-3. Use a concrete example of a sustainable practice instead of speaking abstractly
-4. Add a specific detail about what "environmental factors" or "regulatory requirements" you mean
+3. The text speaks abstractly about "sustainable practices" - sharpen using only what's already implied in the text, or use [PLACEHOLDER] markers for the author to fill in
+4. "Environmental factors" and "regulatory requirements" are vague - narrow down using context already present, don't invent specifics
 5. Consider using first person or addressing the reader directly to add voice
 6. Vary sentence structure - both sentences follow the same pattern
 ```

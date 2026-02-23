@@ -49,6 +49,7 @@ Replace every vague claim with something verifiable. Numbers, names, timeframes,
 - Quantify where possible (percentages, dollar amounts, timeframes, counts)
 - Name specific companies, roles, or contexts when relevant
 - Prefer one detailed example over three generic ones
+- Specificity should serve the argument, not become the argument. Don't overload examples with details that distract from the point you're making.
 
 ### 3. Humble Conviction
 
@@ -95,8 +96,10 @@ Strong posts typically open with one of these moves:
 - A counterintuitive observation that challenges assumptions
 - A direct statement that contradicts received wisdom
 - A time-anchored story that earns the right to the insight
+- A quiet, personal reflection that signals a real person thinking, not performing
 
 **Openings to avoid:**
+- Over-crafted hooks that sound like a copywriter, not a person thinking out loud
 - Generic wisdom ("Success is about...", "The key to growth is...")
 - Questions before context ("Have you ever wondered...", "Are you making this mistake?")
 - Self-promotional announcements ("I'm excited to announce...", "Big news!")
@@ -206,6 +209,9 @@ Apply the framework by:
 3. **Preserve the author's phrasing** — if they wrote something well, keep it exactly
 4. **Write in prose by default** — full sentences, real paragraphs, not choppy fragments
 5. **Tighten, don't chop** — remove fluff without fragmenting the prose
+6. **Surface the author's personal stake** — Does the author have skin in the game on this topic? If so, make that explicit. A post that comments on a phenomenon from the outside is always weaker than one where the author is personally affected. Don't write as an observer when the author is a participant.
+7. **Preempt the strongest counterargument** — Identify the most compelling objection to the post's thesis. If it's strong enough that readers will think of it immediately, address it head-on. Conceding the best counterargument and redirecting it strengthens the argument. Ignoring it makes the post feel naive or evasive.
+8. **Stress-test analogies** — If the post uses an analogy, ask: does this comparison match the *scale* of what's being compared? An analogy that understates or overstates the thing it's illustrating will be the first thing a critical reader attacks. Don't compare a major transformation to a minor convenience tool.
 
 ### Step 7: Return Output
 
@@ -260,6 +266,7 @@ When generating a post:
 - The reader should understand every sentence on first read
 - **Never try to sound smarter than the reader.** Clever-sounding phrases that obscure meaning are worse than plain statements. "People who think differently" beats "people who maintain their own maps of reality."
 - **Test every sentence:** Could you say this more simply? If yes, do it.
+- **Prefer precise language over evocative language when diagnosing a problem.** Don't reach for dramatic words when a specific one exists. "Lack of originality" beats "emptiness." Name the actual problem, not the feeling it gives you.
 
 ### Cliché Blacklist
 Never use these overused phrases:
@@ -325,9 +332,15 @@ Before finalizing, verify the post passes these checks:
 
 5. **Cliché test**: Scan for any phrases from the blacklist or generic LinkedIn-speak. Replace with original language.
 
+6. **Personal stake test**: Does the author have skin in the game on this topic? If the post reads like outside commentary on a phenomenon the author is actually affected by, surface that personal stake explicitly. Don't write as an observer when the author is a participant.
+
+7. **Counterargument test**: What is the strongest objection a critical reader would raise? If it's obvious enough that readers will think of it immediately, the post should address it. Ignoring a strong counterargument makes the post feel naive.
+
+8. **Analogy test**: If the post uses a comparison, does it match the scale of what's being compared? Don't compare a major transformation to a minor convenience tool (e.g., comparing AI rewriting to spellcheck).
+
 ### Post Structure
 
-- **First line**: Must create tension, curiosity, or stakes. It appears in the feed preview and determines whether people click.
+- **First line**: Should create tension, curiosity, or stakes. It appears in the feed preview and determines whether people click. But a quiet personal opening can be more effective than a crafted hook. Don't force sharpness when a reflective tone fits the post better.
 - **Length**: 150-400 words for most posts. 500-800 words for deep educational content with frameworks or numbered insights.
 - **Visual rhythm**: Use line breaks between paragraphs. LinkedIn's mobile experience rewards breathing room.
 - **Closing**: End with substance—a genuine question, a reflection, or a postscript aside. Never end with engagement requests.
