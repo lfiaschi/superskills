@@ -46,22 +46,46 @@ Rewrite the provided text to address the critic's feedback. Your goal is to make
 | AI Pattern | Human Alternative |
 |------------|-------------------|
 | "It is important to note that..." | Just state the point directly |
-| "Furthermore, ..." | Connect ideas naturally or start fresh |
+| "Furthermore, ..." / "Additionally, ..." / "Moreover, ..." | Connect ideas naturally or start fresh |
 | "In order to..." | "To..." |
-| "Utilize" | "Use" |
-| "Leverage" | "Use" or more specific verb |
-| "Navigate the landscape" | Describe the actual action |
+| "Utilize" / "Leverage" | "Use" or a more specific verb |
+| "Navigate the landscape" / "evolving landscape" | Describe the actual situation |
 | "Comprehensive understanding" | "Good grasp" or just "understanding" |
-| "It's worth mentioning" | Delete or just mention it |
+| "It's worth mentioning" / "It's worth noting" | Delete, just mention it |
+| "Due to the fact that" | "Because" |
+| "At this point in time" | "Now" |
+| "In the event that" | "If" |
+| "has the ability to" | "can" |
+| "serves as" / "stands as" / "represents" | "is" |
+| "boasts" / "features" / "offers" | "has" |
+| "delve into" | "explore", "look at", or just remove |
+| "crucial" / "pivotal" / "vital" | Use sparingly or replace with "important" / "key" |
+| "tapestry" / "interplay" / "intricacies" | Use plain terms |
+| "Not only X but also Y" | Restructure — just state both points |
+| "highlighting/underscoring/emphasizing..." | Rewrite without the -ing tack-on |
+| "from X to Y" (false range) | List the items or pick the most relevant |
 
-### Add Human Elements
+### Add Human Voice and Soul
 
-- **Contractions**: "It's" instead of "It is", "don't" instead of "do not"
-- **Direct address**: "You'll find..." instead of "One will find..."
-- **Specific examples**: Replace generic examples with concrete ones
-- **Varied rhythm**: Mix short punchy sentences with longer flowing ones
-- **Emphasis**: Humans naturally stress some points more than others
-- **Mild informality**: Occasional colloquial phrases where appropriate
+**Have opinions.** Don't just report facts — react to them. "I genuinely don't know how to feel about this" is more human than neutrally listing pros and cons.
+
+**Vary your rhythm.** Short punchy sentences. Then longer ones that take their time getting where they're going. Mix it up.
+
+**Acknowledge complexity.** Real humans have mixed feelings. "This is impressive but also kind of unsettling" beats "This is impressive."
+
+**Use "I" when it fits.** First person isn't unprofessional — it's honest. "I keep coming back to..." or "Here's what gets me..." signals a real person thinking.
+
+**Let some mess in.** Perfect structure feels algorithmic. Tangents, asides, and half-formed thoughts are human.
+
+**Be specific about feelings.** Not "this is concerning" but describe what actually concerns you in concrete terms.
+
+**Use contractions.** "It's" not "It is", "don't" not "do not", "can't" not "cannot" — unless formality demands otherwise.
+
+**Address the reader directly.** "You'll find..." instead of "One will find..."
+
+**Break the rule of three.** If you've listed three things, consider two or four instead. Humans don't always think in threes.
+
+**Watch em dashes.** One per piece is fine. Three is a tell. Use commas, parentheses, or just start a new sentence.
 
 ### Fix Logical Issues
 

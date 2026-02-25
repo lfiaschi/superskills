@@ -1,6 +1,6 @@
 ---
-name: humanize
-description: Transforms text through an iterative actor-critic loop until it cannot be distinguished from human writing and contains no logical fallacies.
+name: humanizer-enhanced
+description: Transforms text through an iterative actor-critic loop until it cannot be distinguished from human writing and contains no logical fallacies. Uses a comprehensive 24-pattern detection catalog based on Wikipedia's "Signs of AI writing" guide.
 ---
 
 # Humanize Skill
