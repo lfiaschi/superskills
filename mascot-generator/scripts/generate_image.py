@@ -40,6 +40,7 @@ from scipy.ndimage import binary_erosion
 
 MODELS = {
     "flash": "gemini-2.5-flash-image",
+    "nano-banana-2": "gemini-3.1-flash-image-preview",
     "pro": "gemini-3-pro-image-preview",
 }
 
@@ -56,7 +57,7 @@ GREEN_SCREEN_PROMPT_SUFFIX = (
 def generate_image(
     api_key: str,
     prompt: str,
-    model: str = "pro",
+    model: str = "nano-banana-2",
     green_screen: bool = False,
     reference_image_paths: Optional[list[str]] = None,
 ) -> bytes:
@@ -274,9 +275,11 @@ def main() -> int:
     )
     parser.add_argument(
         "--model",
-        choices=["flash", "pro"],
-        default="pro",
-        help="Model to use: flash (fast, drafts) or pro (quality, final assets)",
+        choices=["flash", "nano-banana-2", "pro"],
+        default="nano-banana-2",
+        help="Model to use: flash (fast, cheap drafts), "
+             "nano-banana-2 (pro quality at flash speed — recommended), "
+             "or pro (highest fidelity)",
     )
     parser.add_argument(
         "--green-screen",

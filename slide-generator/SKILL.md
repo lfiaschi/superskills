@@ -355,13 +355,14 @@ python scripts/generate_slides.py \
   --api-key "$GEMINI_API_KEY" \
   --prompts-file prompts.json \
   --output-dir ./slides \
-  --model pro \
+  --model nano-banana-2 \
   --reference-strategy anchor
 ```
 
 **Model selection:**
-- `pro` — Better text rendering, use for text-heavy slides (recommended default)
-- `flash` — Faster iteration, use for drafts or image-heavy slides
+- `nano-banana-2` — Pro-level quality at flash speed, half the cost of pro (**recommended default**)
+- `pro` — Highest fidelity, best for text-heavy slides requiring maximum accuracy
+- `flash` — Cheapest option, use for quick drafts only
 
 **Reference strategy:**
 - `anchor` — Slide 1 always included + previous slide (RECOMMENDED)
@@ -423,7 +424,7 @@ python scripts/generate_slides.py \
   --api-key "$GEMINI_API_KEY" \
   --prompt "[Updated prompt for single slide]" \
   --output ./slides/slide_03.png \
-  --model pro
+  --model nano-banana-2
 ```
 
 ---
@@ -462,8 +463,9 @@ project/
 Endpoint: POST https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent
 
 Models:
-- gemini-2.5-flash-image (fast, drafts)
-- gemini-3-pro-image-preview (quality, text-heavy)
+- gemini-3.1-flash-image-preview (Nano Banana 2 — pro quality at flash speed, recommended)
+- gemini-2.5-flash-image (fast, cheap drafts)
+- gemini-3-pro-image-preview (highest fidelity, text-heavy)
 
 Config:
 generation_config = {"responseModalities": ["IMAGE"]}

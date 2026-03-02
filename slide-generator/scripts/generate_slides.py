@@ -40,6 +40,7 @@ from urllib.error import HTTPError
 # Model configurations
 MODELS = {
     "flash": "gemini-2.5-flash-image",
+    "nano-banana-2": "gemini-3.1-flash-image-preview",
     "pro": "gemini-3-pro-image-preview",
 }
 
@@ -71,7 +72,7 @@ You MUST maintain overall visual cohesive style that is EXACTLY consistent with 
 def generate_image(
     api_key: str,
     prompt: str,
-    model: str = "pro",
+    model: str = "nano-banana-2",
     aspect_ratio: str = "16:9",
     resolution: str = "4K",
     reference_image_paths: Optional[list[str]] = None,
@@ -103,8 +104,8 @@ def generate_image(
     model_id = MODELS[model]
     url = f"{API_BASE}/{model_id}:generateContent?key={api_key}"
 
-    # Build request content with aspect ratio and resolution in prompt
-    enhanced_prompt = f"{prompt}\n\nIMPORTANT: Generate as a {aspect_ratio} aspect ratio slide at {resolution} resolution."
+    # Build request content
+    enhanced_prompt = prompt
 
     # Add style consistency instructions if reference images are provided
     if reference_image_paths:
@@ -131,8 +132,12 @@ def generate_image(
     payload = {
         "contents": [{"parts": parts}],
         "generationConfig": {
-            "responseModalities": ["IMAGE"]
-        }
+            "responseModalities": ["IMAGE"],
+            "imageConfig": {
+                "aspectRatio": aspect_ratio,
+                "imageSize": resolution,
+            },
+        },
     }
 
     request = Request(
@@ -223,7 +228,7 @@ def generate_batch(
     api_key: str,
     prompts: list[dict],
     output_dir: str,
-    model: str = "pro",
+    model: str = "nano-banana-2",
     aspect_ratio: str = "16:9",
     resolution: str = "4K",
     reference_strategy: str = "anchor",
@@ -353,9 +358,11 @@ def main() -> int:
     )
     parser.add_argument(
         "--model",
-        choices=["flash", "pro"],
-        default="pro",
-        help="Model to use: flash (fast) or pro (high quality)",
+        choices=["flash", "nano-banana-2", "pro"],
+        default="nano-banana-2",
+        help="Model to use: flash (fast, cheap), "
+             "nano-banana-2 (pro quality at flash speed — recommended), "
+             "or pro (highest fidelity)",
     )
     parser.add_argument(
         "--aspect-ratio",

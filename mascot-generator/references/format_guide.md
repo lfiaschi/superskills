@@ -156,8 +156,9 @@ If you generate both themed versions:
 
 | Model | ID | Best For |
 |-------|----|----------|
-| Pro | `gemini-3-pro-image-preview` | Final assets, text-heavy images |
-| Flash | `gemini-2.5-flash-image` | Drafts, iterations, quick tests |
+| Nano Banana 2 | `gemini-3.1-flash-image-preview` | **Recommended default** — pro quality at flash speed |
+| Pro | `gemini-3-pro-image-preview` | Highest fidelity, maximum factual accuracy |
+| Flash | `gemini-2.5-flash-image` | Cheapest option, quick drafts only |
 
 ### API Configuration
 

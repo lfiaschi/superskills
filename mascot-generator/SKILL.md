@@ -143,7 +143,7 @@ python scripts/generate_image.py \
   --output ./iterations/variation_01.png \
   --size 512x512 \
   --green-screen \
-  --model pro
+  --model nano-banana-2
 ```
 
 **Prompt template for mascot generation:**
@@ -197,7 +197,7 @@ python scripts/generate_image.py \
   --output ./assets/mascot_raw.png \
   --size 512x512 \
   --green-screen \
-  --model pro
+  --model nano-banana-2
 ```
 
 2. The script automatically:
@@ -297,7 +297,7 @@ python scripts/generate_image.py \
   --output mascot.png \
   --size 256x256 \
   --green-screen \
-  --model pro
+  --model nano-banana-2
 ```
 
 ### With Reference Images
@@ -309,7 +309,7 @@ python scripts/generate_image.py \
   --output banner.png \
   --size 1200x400 \
   --green-screen \
-  --model pro \
+  --model nano-banana-2 \
   --references mascot.png
 ```
 
@@ -355,7 +355,7 @@ python scripts/generate_image.py \
 | **Green fringing** at edges | Anti-aliasing mixed green into edge pixels | Increase `hue_range` parameter or run edge cleanup twice |
 | **Character has green parts** | Palette included green/teal tones | Redesign palette to exclude HSV hue 80-160° |
 | **Aspect ratio wrong** | Gemini ignores aspect ratio instructions | Generate at square, then resize/crop to target dimensions |
-| **Model 404 error** | Wrong model name | Use `gemini-2.5-flash-image` (flash) or `gemini-3-pro-image-preview` (pro) |
+| **Model 404 error** | Wrong model name | Use `gemini-3.1-flash-image-preview` (nano-banana-2, recommended), `gemini-2.5-flash-image` (flash), or `gemini-3-pro-image-preview` (pro) |
 | **Text not rendering** | Gemini struggles with text | Use `pro` model; reduce text length; add text as overlay after generation |
 | **Style drift across assets** | Each generation is independent | Use `--references` flag to pass the approved mascot as reference |
 | **SVG not rendering** | SVG wrapper malformed | Verify base64 encoding; check dimensions match |
@@ -363,8 +363,9 @@ python scripts/generate_image.py \
 
 ### Model Selection
 
-- **`pro`** (`gemini-3-pro-image-preview`) — Better quality, better text rendering. Use for final assets.
-- **`flash`** (`gemini-2.5-flash-image`) — Faster, cheaper. Use for drafts and iterations.
+- **`nano-banana-2`** (`gemini-3.1-flash-image-preview`) — Pro-level quality at flash speed, half the cost of pro. **Recommended default.**
+- **`pro`** (`gemini-3-pro-image-preview`) — Highest fidelity, best factual accuracy. Use when maximum quality is needed.
+- **`flash`** (`gemini-2.5-flash-image`) — Cheapest option. Use for quick drafts only.
 
 ---
 
