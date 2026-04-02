@@ -1,6 +1,6 @@
 ---
 name: second-opinion
-description: This skill queries GPT-5.2 Pro and Gemini 3 Pro in parallel to get alternative perspectives on Claude's outputs. It extracts context automatically from conversation history, sends the same task to both models concurrently via subagents, then presents all responses for Claude to perform objective comparative analysis. The skill should be used when the user types `/second-opinion` to refine or validate Claude's output across any content type: answers, drafts, code, strategies, creative work, or analysis.
+description: "This skill queries GPT-5.2 Pro and Gemini 3 Pro in parallel to get alternative perspectives on Claude's outputs. It extracts context automatically from conversation history, sends the same task to both models concurrently via subagents, then presents all responses for Claude to perform objective comparative analysis. The skill should be used when the user types `/second-opinion` to refine or validate Claude's output across any content type: answers, drafts, code, strategies, creative work, or analysis."
 ---
 
 # Second Opinion
